@@ -22,7 +22,7 @@ namespace zjcSTL
     class bigfloat;
 } // namespace zjcSTL
 
-namespace std _GLIBCXX_VISIBILITY(default)
+namespace std
 {
     template <size_t base>
     string to_string(const zjcSTL::bigint<base> &__Val)
@@ -34,7 +34,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     {
         return string(__Val);
     }
-} // namespace )
+} // namespace std
 
 namespace zjcSTL
 {
