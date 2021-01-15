@@ -585,23 +585,23 @@ namespace zjcSTL
                 return -(__Val - *this);
             }
             bigfloat res = *this;
+            int move = 0;
             if (__Val.point < point)
             {
                 res.reset_point(__Val.point);
             }
+            else
+            {
+                move = __Val.point - res.point;
+            }
             for (int i = 0; i < (int)__Val.size(); ++i)
             {
-                if (res.number[i] < __Val.number[i])
+                if (res.number[i + move] < __Val.number[i])
                 {
-                    res.number[i] += base;
-                    --res.number[i + 1];
+                    res.number[i + move] += base;
+                    --res.number[i + move + 1];
                 }
-                res.number[i] -= __Val.number[i];
-            }
-            for (int i = __Val.size(); res.number[i] < 0; ++i)
-            {
-                res.number[i] += base;
-                --res.number[i + 1];
+                res.number[i + move] -= __Val.number[i];
             }
             res.shrink_to_fit();
             return res;
@@ -739,28 +739,19 @@ namespace zjcSTL
                 }
             }
             double waste = start_waste;
-            std::cout << res << std::endl;
             while (res.point + 2000 > accuracy)
             {
                 res = res * (-*this * res + 2);
-                std::cout << res << std::endl;
                 waste *= 2;
                 if (waste > 100)
                 {
-                    std::cout << (res.point) << std::endl;
-                    std::cout << (res.point + (int)waste) << std::endl;
                     res.reset_point(res.point + (int)waste);
-                    std::cout << (res.point) << std::endl;
                     waste = start_waste;
-                    std::cout << res << std::endl;
                 }
-                std::cout << waste << std::endl;
             }
-            std::cout << res << std::endl;
             res.reset_point(accuracy);
             res = res * (-*this * res + 2);
             res.reset_point(accuracy);
-            std::cout << res << std::endl;
             return res;
         }
         bigfloat operator/(const bigfloat &__Val) const noexcept
@@ -782,6 +773,12 @@ namespace zjcSTL
             for (int i = size() - 1; i >= 0; --i)
             {
                 Left = Left * base + number[i];
+                res.number[i + up_per_time] = Left / v;
+                Left %= v;
+            }
+            for (int i = -1; i >= -up_per_time; --i)
+            {
+                Left = Left * base;
                 res.number[i + up_per_time] = Left / v;
                 Left %= v;
             }
