@@ -205,7 +205,7 @@ namespace zjcSTL
                 tmp *= base;
                 --point;
             }
-            while()
+            // while()
         }
         bigfloat(const std::string &__Val, const int &Up_per_time = 10) _GLIBCXX_NOEXCEPT
         {
